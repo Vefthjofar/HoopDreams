@@ -1,28 +1,32 @@
 const errors = require("../errors");
-const db = require("../data/db");
 const basketBallFields = require("../services/basketballFieldService");
 
 module.exports = {
   queries: {
-    allPickupGames: async (parent, args) => {
+    allPickupGames: async (parent, args, {db}) => {
       return (await db.PickupGame.find({}));
     }
   },
   mutations: {
-    createPickupGame: async (parent, args) => {
+    createPickupGame: async (parent, args,{db}) => {
         const newGame = {
             start: args.input.start.value,
             end: args.input.end.value,
-            location: args.input.basketballFieldId,
-            host: args.input.hostId
+            basketballFieldId: args.input.basketballFieldId,
+            hostId: args.input.hostId
         }
         return await db.PickupGame.create(newGame);
       }
   },
   types: {
       PickupGame: {
-          location: async (parent, args) => await basketBallFields.findById(parent.basketballFieldId),
-          host: async (parent, args) => await db.Player.findById(parent.hostId),
+          
+          host: async (parent, args, {db}) =>{
+              const loc = await db.Player.findById(parent.hostId);
+              console.log(parent);
+              return loc;
+          } ,
+          location: async (parent, args, {db}) => await basketBallFields.findById(parent.basketballFieldId)
       }
   }
 };
