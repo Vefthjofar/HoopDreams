@@ -3,6 +3,7 @@ type Mutation {
   createPickupGame(input: PickupGameInput): PickupGame!
   createPlayer(input:PlayerInput!): Player!
   updatePlayer(id:ID!,name:String!): Player!
-  deletePlayer(id:ID!): Player!
+  deletePlayer(id:ID!): Boolean!
+  deletePickupGame(id:ID!): Boolean!
 }
 `;
