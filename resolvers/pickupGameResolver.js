@@ -9,6 +9,12 @@ module.exports = {
   },
   mutations: {
     createPickupGame: async (parent, args, { db }) => {
+      const field = await basketBallFields.findById(
+        args.input.basketballFieldId
+      );
+      if (field.status == "CLOSED") {
+        throw new errors.BasketballFieldClosedError();
+      }
       const newGame = {
         start: args.input.start.value,
         end: args.input.end.value,
