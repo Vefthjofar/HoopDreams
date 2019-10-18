@@ -37,6 +37,11 @@ module.exports = {
           { $push: { registeredPlayers: args.input.playerId }},
           { new: true }
         );
+        const updatedPlayer = await db.Player.findByIdAndUpdate(
+          args.input.playerId,
+          { $push: { playedGames: args.input.pickupGameId }},
+          { new: true }
+        );
         return updatedgame;
       }
     },
@@ -49,6 +54,12 @@ module.exports = {
         const game = await db.PickupGame.findByIdAndUpdate(
           args.input.pickupGameId,
           { $pull: { registeredPlayers: args.input.playerId }},
+          { new: true }
+        );
+        // Þarf datecheck fyrir þennan badboi
+        const updatedPlayer = await db.Player.findByIdAndUpdate(
+          args.input.playerId,
+          { $pull: { playedGames: args.input.pickupGameId }},
           { new: true }
         );
         return true;
