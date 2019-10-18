@@ -9,7 +9,10 @@ const server = new ApolloServer({
         Add resolvers
     */
   typeDefs,
-  resolvers
+  resolvers,
+  context: async () => ({
+    db: HoopDreamsDb
+  })
 });
 
 server
