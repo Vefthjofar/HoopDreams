@@ -1,15 +1,14 @@
-var request = require('request');
-
-var bBallFields = request.get('https://basketball-fields.herokuapp.com/api/basketball-fields', {json: true}, (err, res, body) => {
-  if(err) { return console.log(err); }
-  return body;
-});
-
-const findById = (id) => {
-    return bBallFields.response.body.find(s => s.id === id);
-}
+const playerResolver = require("./playerResolver");
+const pickupGameResolver = require("./pickupGameResolver");
+const basketBallResolver = require("./basketballFieldResolver");
+const moment = require("moment");
+const { GraphQLScalarType } = require("graphql");
 
 module.exports = {
-  basketballFields: bBallFields,
-  findById
+  Query: {
+    ...playerResolver.queries
+  },
+  Mutation: {
+    ...playerResolver.mutations
+  }
 };
