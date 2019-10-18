@@ -1,24 +1,23 @@
 const errors = require("../errors");
-const db = require("../data/db");
 const basketBallFields = require("../services/basketballFieldService");
 
 module.exports = {
   queries: {
-    allPickupGames: async (parent, args) => {
+    allPickupGames: async (parent, args, {db}) => {
       return await db.PickupGame.find({});
     }
   },
   mutations: {
-    createPickupGame: async (parent, args) => {
-      const newGame = {
-        start: args.input.start.value,
-        end: args.input.end.value,
-        location: args.input.basketballFieldId,
-        host: args.input.hostId
-      };
-      return await db.PickupGame.create(newGame);
+    createPickupGame: async (parent, args,{db}) => {
+        const newGame = {
+            start: args.input.start.value,
+            end: args.input.end.value,
+            basketballFieldId: args.input.basketballFieldId,
+            hostId: args.input.hostId
+        }
+        return await db.PickupGame.create(newGame);
     },
-    deletePickupGame: async (parent, args) => {
+    deletePickupGame: async (parent, args, {db}) => {
       const gameToRemove = await db.PickupGame.findByIdAndUpdate(
         args.id,
         { deleted: true },
@@ -37,6 +36,11 @@ module.exports = {
           { $push: { registeredPlayers: args.input.playerId }},
           { new: true }
         );
+        const updatedPlayer = await db.Player.findByIdAndUpdate(
+          args.input.playerId,
+          { $push: { playedGames: args.input.pickupGameId }},
+          { new: true }
+        );
         return updatedgame;
       }
     },
@@ -51,6 +55,12 @@ module.exports = {
           { $pull: { registeredPlayers: args.input.playerId }},
           { new: true }
         );
+        // Þarf datecheck fyrir þennan badboi
+        const updatedPlayer = await db.Player.findByIdAndUpdate(
+          args.input.playerId,
+          { $pull: { playedGames: args.input.pickupGameId }},
+          { new: true }
+        );
         return true;
       }
     }
@@ -59,7 +69,7 @@ module.exports = {
     PickupGame: {
       location: async (parent, args) =>
         await basketBallFields.findById(parent.basketballFieldId),
-      host: async (parent, args) => await db.Player.findById(parent.hostId)
+      host: async (parent, args, {db}) => await db.Player.findById(parent.hostId)
     }
   }
 };
