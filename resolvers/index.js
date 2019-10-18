@@ -5,10 +5,19 @@ const moment = require("moment");
 const { GraphQLScalarType } = require("graphql");
 
 module.exports = {
-  Query: {
-    ...playerResolver.queries
-  },
-  Mutation: {
-    ...playerResolver.mutations
-  }
+    Query: {
+        ...playerResolver.queries
+    },
+    Mutation: {
+        ...playerResolver.mutations
+    },
+    Moment: new GraphQLScalarType({
+        name: 'Moment',
+        description: 'Icelandic locale using the ‘llll’ format',
+        parseValue: (value) => { return value; },
+        parseLiteral: (value) => { return value; },
+        serialize: (value) => {
+            return moment(value).locale('is').format('llll');
+        }
+    })
 };
