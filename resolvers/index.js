@@ -15,6 +15,7 @@ module.exports = {
         ...pickupGameResolver.mutations
     },
     ...pickupGameResolver.types,
+    ...basketBallResolver.types,
     Moment: new GraphQLScalarType({
         name: 'Moment',
         description: 'Icelandic locale using the ‘llll’ format',

@@ -11,5 +11,10 @@ module.exports = {
             if(field == null) { throw new errors.NotFoundError(); }
             else return field;
         }
+    },
+    types: {
+        BasketballField: {
+            pickupGames: async (parent, args, {db}) => (await db.PickupGame.find({})).filter(b => b.basketballFieldId === parent.id)
+        }
     }
 };
