@@ -4,5 +4,6 @@ type Mutation {
   createPlayer(input:PlayerInput!): Player!
   updatePlayer(id:ID!,name:String!): Player!
   deletePlayer(id:ID!): Player!
+  addPlayerToPickupGame(gameId:ID!,playerId:ID!): Player!
 }
 `;

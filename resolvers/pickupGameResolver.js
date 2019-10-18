@@ -10,14 +10,22 @@ module.exports = {
   },
   mutations: {
     createPickupGame: async (parent, args) => {
-        const newGame = {
-            start: args.input.start.value,
-            end: args.input.end.value,
-            location: args.input.basketballFieldId,
-            host: args.input.hostId
-        }
-        return await db.PickupGame.create(newGame);
+      const newGame = {
+          start: args.input.start.value,
+          end: args.input.end.value,
+          location: args.input.basketballFieldId,
+          host: args.input.hostId
       }
+      return await db.PickupGame.create(newGame);
+    },
+    addPlayerToPickupGame: async (parent, args, {db}) => {
+      return await db.Player.findByIdAndUpdate(
+        args.id,
+        { name: args.name },
+        { new: true }
+      );
+    },
+
   },
   types: {
       PickupGame: {
