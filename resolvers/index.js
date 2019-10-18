@@ -6,10 +6,12 @@ const { GraphQLScalarType } = require("graphql");
 
 module.exports = {
     Query: {
-        ...playerResolver.queries
+        ...playerResolver.queries,
+        ...pickupGameResolver.queries
     },
     Mutation: {
-        ...playerResolver.mutations
+        ...playerResolver.mutations,
+        ...pickupGameResolver.mutations
     },
     Moment: new GraphQLScalarType({
         name: 'Moment',

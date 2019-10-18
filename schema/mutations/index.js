@@ -1,6 +1,6 @@
 module.exports = `
 type Mutation {
-  createPickupGames(start: Moment! end: Moment! location: PickupGameInput! registeredPlayers: [PlayerInput!]! host: PlayerInput!): PickupGame!
+  createPickupGame(input: PickupGameInput): PickupGame!
   createPlayer(input:PlayerInput!): Player!
 }
 `;
