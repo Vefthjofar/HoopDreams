@@ -7,7 +7,8 @@ const { GraphQLScalarType } = require("graphql");
 module.exports = {
     Query: {
         ...playerResolver.queries,
-        ...pickupGameResolver.queries
+        ...pickupGameResolver.queries,
+        ...basketBallResolver.queries
     },
     Mutation: {
         ...playerResolver.mutations,
