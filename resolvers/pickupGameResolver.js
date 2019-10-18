@@ -4,7 +4,15 @@ const basketBallFields = require("../services/basketballFieldService");
 module.exports = {
   queries: {
     allPickupGames: async (parent, args, { db }) => {
-      return await db.PickupGame.find({});
+      return (await db.PickupGame.find({})).filter(p => p.deleted === false);
+    },
+    pickupGame: async (parent, args, { db }) => {
+      const pg = await db.pickupGame.findById(args.id);
+      if (pg != null || !pg.deleted) {
+        return pg;
+      } else {
+        throw new errors.NotFoundError();
+      }
     }
   },
   mutations: {
