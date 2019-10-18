@@ -1,5 +1,6 @@
 module.exports = `
 type Query {
-  getAllPickupGames: [PickupGame!]!
+  getAllPickupGames: [PickupGame!]!,
+  getAllPlayers: [Player]
 }
 `;

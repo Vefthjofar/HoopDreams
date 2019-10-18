@@ -1,16 +1,17 @@
-const { ApolloServer } = require('apollo-server');
-const typeDefs = require('./schema');
-const resolvers = require('./resolvers');
-
+const { ApolloServer } = require("apollo-server");
+const typeDefs = require("./schema");
+const resolvers = require("./resolvers");
+const HoopDreamsDb = require("./data/db");
 
 const server = new ApolloServer({
-    /*
+  /*
         Add typeDefs
         Add resolvers
     */
-   typeDefs,
-   resolvers
+  typeDefs,
+  resolvers
 });
 
-server.listen()
-    .then(({ url }) => console.log(`GraphQL Service is running on ${ url }`));
+server
+  .listen()
+  .then(({ url }) => console.log(`GraphQL Service is running on ${url}`));
