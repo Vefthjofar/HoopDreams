@@ -10,10 +10,9 @@ module.exports = {
     //query getPlayer{player(id:"5da9d82f8e966429fc2911a5"){id,name}}
     player: async (parent, args, { db }) => {
       const player = await db.Player.findById(args.id);
-      if (!player.deleted) {
+      if (player != null || !player.deleted) {
         return player;
       } else {
-        //Throw error
         throw new errors.NotFoundError();
       }
     }
@@ -25,20 +24,30 @@ module.exports = {
     },
     //mutation updatePlayer{updatePlayer(id:"5da9d82f8e966429fc2911a5",name:"Birkir"){id,name}}
     updatePlayer: async (parent, args, { db }) => {
-      return await db.Player.findByIdAndUpdate(
-        args.id,
-        { name: args.name },
-        { new: true }
-      );
+      const player = await db.Player.findById(args.id);
+      if (player != null || !player.deleted) {
+        return await db.Player.findByIdAndUpdate(
+          args.id,
+          { name: args.name },
+          { new: true }
+        );
+      } else {
+        throw new errors.NotFoundError();
+      }
     },
     //mutation deletePlayer{deletePlayer(id:"5da9defbfd5e2e28707ccc71"){id,name}}
     deletePlayer: async (parent, args, { db }) => {
-      await db.Player.findByIdAndUpdate(
-        args.id,
-        { deleted: true },
-        { new: true }
-      );
-      return true;
+      const player = await db.Player.findById(args.id);
+      if (player != null || !player.deleted) {
+        await db.Player.findByIdAndUpdate(
+          args.id,
+          { deleted: true },
+          { new: true }
+        );
+        return true;
+      } else {
+        throw new errors.NotFoundError();
+      }
     }
   }
 };
