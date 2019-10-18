@@ -27,8 +27,10 @@ module.exports = {
         start: args.input.start.value,
         end: args.input.end.value,
         basketballFieldId: args.input.basketballFieldId,
-        hostId: args.input.hostId
+        hostId: args.input.hostId,
+        registeredPlayers: [args.input.hostId]
       };
+
       return await db.PickupGame.create(newGame);
     },
     deletePickupGame: async (parent, args, { db }) => {
